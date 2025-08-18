@@ -9,13 +9,17 @@ namespace Game.BaseEnemy
 {
     public class EnemyManager : EnablerMonoBehaviour
     {
+        private const float WAIT_TIME_BEFORE_ENEMY_APPEAR = 0.1f;
+        
         [SerializeField] private PooledEnemyConfig _pooledEnemyConfig;
         [SerializeField] private float _enemyDistanceFromHeroToAppear;
         [SerializeField] private float _enemySpawnInterval;
         [SerializeField] private int _maxEnemySpawnPerRound;
         [SerializeField] private int _maxEnemyAmount;
         [SerializeField] private int _enemyDefaultHp;
-     
+        [SerializeField] private EnemyMarkSpawner _enemySpawnMarkVfxPrefab;
+        [SerializeField] private EnemyRaySpawner _enemySpawnRayVfxPrefab;
+
         public static EnemyManager Instance { get; private set; }
         
         private List<Enemy> _enemyList;
@@ -30,6 +34,8 @@ namespace Game.BaseEnemy
         {
             _enemyList = new List<Enemy>();
             ObjectPool.Instance.RegisterPrefab(_pooledEnemyConfig.EnemyPrefab.gameObject, _pooledEnemyConfig.EnemyPrewarmCount);
+            ObjectPool.Instance.RegisterPrefab(_enemySpawnMarkVfxPrefab.gameObject, _pooledEnemyConfig.EnemyPrewarmCount);
+            ObjectPool.Instance.RegisterPrefab(_enemySpawnRayVfxPrefab.gameObject, _pooledEnemyConfig.EnemyPrewarmCount);
             _spawnTimer = _enemySpawnInterval;
         }
 
@@ -80,15 +86,40 @@ namespace Game.BaseEnemy
             
             for (int i = 0; i < enemiesToSpawn; i++)
             {
-                
                 Vector2 directionFromPlayer = Random.insideUnitCircle.normalized;
                 Vector3 spawnPosition = heroPosition + new Vector3(directionFromPlayer.x, 0.0f, directionFromPlayer.y) * _enemyDistanceFromHeroToAppear;
-                Enemy enemyInstance = ObjectPool.Instance.GetPooledObject(_pooledEnemyConfig.EnemyPrefab.gameObject, spawnPosition, Quaternion.identity).GetComponent<Enemy>();
-                enemyInstance.Initialize(_enemyDefaultHp, _pooledEnemyConfig.EnemyPrefab);
-                enemyInstance.OnDead += Enemy_OnDead;
-                _enemyList?.Add(enemyInstance);
+                StartCoroutine(SpawnEnemyChoreography(spawnPosition));
                 yield return new WaitForEndOfFrame();
             }
+        }
+
+        private IEnumerator SpawnEnemyChoreography(Vector3 spawnPosition)
+        {
+            EnemyMarkSpawner spawnMarkVfxInstance = ObjectPool.Instance
+                .GetPooledObject(_enemySpawnMarkVfxPrefab.gameObject, Vector3.zero, Quaternion.identity)
+                .GetComponent<EnemyMarkSpawner>();
+            spawnMarkVfxInstance.transform.position = spawnPosition;
+            spawnMarkVfxInstance.Initialize();
+            EnemyRaySpawner spawnRayVfxInstance = ObjectPool.Instance
+                .GetPooledObject(_enemySpawnRayVfxPrefab.gameObject, Vector3.zero, Quaternion.identity)
+                .GetComponent<EnemyRaySpawner>();
+            spawnRayVfxInstance.transform.position = spawnPosition;
+            spawnRayVfxInstance.Initialize();
+            float waitTime = spawnMarkVfxInstance.GetSpawnDuration();
+            StartCoroutine(SpawnEnemyAndWaitToAddToDetectableList(spawnPosition, waitTime));
+            yield return new WaitForSeconds(waitTime);
+            ObjectPool.Instance.Release(_enemySpawnMarkVfxPrefab.gameObject, spawnMarkVfxInstance.gameObject);
+            ObjectPool.Instance.Release(_enemySpawnRayVfxPrefab.gameObject, spawnRayVfxInstance.gameObject);
+        }
+
+        private IEnumerator SpawnEnemyAndWaitToAddToDetectableList(Vector3 spawnPosition, float waitTime)
+        {
+            yield return new WaitForSeconds(WAIT_TIME_BEFORE_ENEMY_APPEAR);
+            Enemy enemyInstance = ObjectPool.Instance.GetPooledObject(_pooledEnemyConfig.EnemyPrefab.gameObject, spawnPosition, Quaternion.identity).GetComponent<Enemy>();
+            enemyInstance.Initialize(_enemyDefaultHp, _pooledEnemyConfig.EnemyPrefab);
+            enemyInstance.OnDead += Enemy_OnDead;
+            yield return new WaitForSeconds(waitTime - WAIT_TIME_BEFORE_ENEMY_APPEAR);
+            _enemyList?.Add(enemyInstance);
         }
 
         private void Enemy_OnDead(Enemy enemy)
