@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UI
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 0
+      enableAlphaDilation: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 7af1d8ba21a96244d8645bdfa81edece, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+    packedSpriteRenderDataKeys:
+    - e02b5a425513c1a4481ea98b6d74b41c: -2413806693520163455
+    - cf547f448b973a84da0eabe0e57dc88b: 21300000
+    - 85e1daa540d83d047808b123cfe89c59: 21300000
+    - b72686575cfdbcc4487a9f58097ce943: 21300000
+    - 72ca4ddcd839caa43ad07a643530240f: 21300000
+    - 7507591e1cebc6043a040fb0fb56c70e: 21300000
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: -2413806693520163455, guid: e02b5a425513c1a4481ea98b6d74b41c, type: 3}
+  - {fileID: 21300000, guid: cf547f448b973a84da0eabe0e57dc88b, type: 3}
+  - {fileID: 21300000, guid: 85e1daa540d83d047808b123cfe89c59, type: 3}
+  - {fileID: 21300000, guid: b72686575cfdbcc4487a9f58097ce943, type: 3}
+  - {fileID: 21300000, guid: 72ca4ddcd839caa43ad07a643530240f, type: 3}
+  - {fileID: 21300000, guid: 7507591e1cebc6043a040fb0fb56c70e, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - Circle
+  - Button01_l_White_Bg
+  - generic_shape_circle_border_crossCuts_128x128
+  - WhiteSquare
+  - circle-border-ui-sprite
+  - Slider_Level01_Fill_White_fullBar
+  m_RenderDataMap: {}
+  m_Tag: UI
+  m_IsVariant: 0
