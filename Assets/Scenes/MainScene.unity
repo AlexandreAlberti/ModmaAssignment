@@ -1004,6 +1004,8 @@ MonoBehaviour:
   _maxEnemySpawnPerRound: 2
   _maxEnemyAmount: 20
   _enemyDefaultHp: 50
+  _enemySpawnMarkVfxPrefab: {fileID: 3775342557578951300, guid: 1bc0ccab19e630d4eabcfbc8252b07bf, type: 3}
+  _enemySpawnRayVfxPrefab: {fileID: 8088274954164098260, guid: fac7499b02697574ca6d78a37911deb2, type: 3}
 --- !u!114 &1215937521
 MonoBehaviour:
   m_ObjectHideFlags: 0
