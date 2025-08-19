@@ -1,10 +1,11 @@
+using System.Collections;
 using Game.BaseEnemy;
 using Game.BaseHero;
 using Game.Input;
 using UI;
 using UnityEngine;
 
-namespace Game
+namespace Game.Manager
 {
     public class GameManager : MonoBehaviour
     {
@@ -15,11 +16,22 @@ namespace Game
             EnemyManager.Instance.Initialize();
             Joystick.Instance.Initialize();
             TouchInputManager.Instance.Initialize();
-            TouchInputManager.Instance.Enable();
-            Joystick.Instance.Enable();
             ObjectPool.Instance.ActivatePooling();
-            EnemyManager.Instance.Enable();
             UIManager.Instance.Initialize();
+            UIManager.Instance.ShowStartGameAnimation();
+            UIManager.Instance.OnStartGameAnimationEnded += UIManager_OnStartGameAnimationEnded;
+        }
+
+        private void UIManager_OnStartGameAnimationEnded()
+        {
+            GameMatchStart();
+        }
+
+        private void GameMatchStart()
+        {
+            Joystick.Instance.Enable();
+            TouchInputManager.Instance.Enable();
+            EnemyManager.Instance.Enable();
         }
     }
 }
