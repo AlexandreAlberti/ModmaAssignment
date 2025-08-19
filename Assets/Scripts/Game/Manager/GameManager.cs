@@ -10,14 +10,13 @@ namespace Game.Manager
 {
     public class GameManager : MonoBehaviour
     {
-        private const int ENEMIES_TO_KILL = 10;
-        private const int TIME_TO_PLAY = 60;
-        
         private CountDown _matchCountDown;
+        private int _enemiesToKill;
         private int _enemiesKilled;
+        private int _playTime;
         private int _secondsPassed;
         
-        private void Start()
+        private async void Start()
         {
             ObjectPool.Instance.Initialize();
             HeroManager.Instance.Initialize();
@@ -26,12 +25,21 @@ namespace Game.Manager
             TouchInputManager.Instance.Initialize();
             ObjectPool.Instance.ActivatePooling();
             
+            RemoteConfig.Instance.OnRemoteConfigLoaded += RemoteConfig_OnRemoteConfigLoaded;
+            await RemoteConfig.Instance.Initialize();
+        }
+
+        private void RemoteConfig_OnRemoteConfigLoaded(int playTime, int enemiesToKill)
+        {
+            _playTime = playTime;
+            _enemiesToKill = enemiesToKill;
+            
             _matchCountDown = gameObject.AddComponent<CountDown>();
-            _matchCountDown.SetTotalTime(TIME_TO_PLAY);
+            _matchCountDown.SetTotalTime(_playTime);
             _matchCountDown.OnSecondPassed += MatchCountDown_OnSecondPassed;
             _matchCountDown.OnCountDownEnded += MatchCountDown_OnCountDownEnded;
-            
-            UIManager.Instance.Initialize(ENEMIES_TO_KILL, TIME_TO_PLAY);
+
+            UIManager.Instance.Initialize(_enemiesToKill, _playTime);
             UIManager.Instance.ShowStartGameAnimation();
             UIManager.Instance.OnStartGameAnimationEnded += UIManager_OnStartGameAnimationEnded;
         }
@@ -61,9 +69,9 @@ namespace Game.Manager
         private void EnemyManager_OnEnemyKilled()
         {
             _enemiesKilled++;
-            UIManager.Instance.UpdateRemainingKills(Math.Max(0, ENEMIES_TO_KILL - _enemiesKilled));
+            UIManager.Instance.UpdateRemainingKills(Math.Max(0, _enemiesToKill - _enemiesKilled));
 
-            if (_enemiesKilled >= ENEMIES_TO_KILL)
+            if (_enemiesKilled >= _enemiesToKill)
             {
                 EndGame(true);
             }
@@ -86,7 +94,7 @@ namespace Game.Manager
         private void MatchCountDown_OnSecondPassed()
         {
             _secondsPassed++;
-            UIManager.Instance.UpdateRemainingSeconds(TIME_TO_PLAY - _secondsPassed);
+            UIManager.Instance.UpdateRemainingSeconds(_playTime - _secondsPassed);
         }
     }
 }

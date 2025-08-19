@@ -31,13 +31,16 @@ namespace Game.UI
         private void Awake()
         {
             Instance = this;
+            _timeLeftText.gameObject.SetActive(false);
+            _remainingEnemiesText.gameObject.SetActive(false);
+            _startGamePanel.SetActive(false);
+            _endGamePanel.gameObject.SetActive(false);
         }
 
         public void Initialize(int enemiesToKill, int remainingSeconds)
         {
-            _startGamePanel.SetActive(false);
-            _endGamePanel.Initialize();
-            _endGamePanel.gameObject.SetActive(false);
+            _timeLeftText.gameObject.SetActive(true);
+            _remainingEnemiesText.gameObject.SetActive(true);
             UpdateRemainingKills(enemiesToKill);
             UpdateRemainingSeconds(remainingSeconds);
             _curvedSwordButton.OnClicked += CurvedSwordButton_OnClicked;

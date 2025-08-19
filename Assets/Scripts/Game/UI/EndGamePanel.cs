@@ -6,7 +6,7 @@ namespace Game.UI
     {
         [SerializeField] public GameObject _winText;
         [SerializeField] public GameObject _loseText;
-        public void Initialize()
+        private void Awake()
         {
             _winText.SetActive(false);
             _loseText.SetActive(false);
