@@ -42,6 +42,7 @@ SpriteAtlas:
     - cf547f448b973a84da0eabe0e57dc88b: 21300000
     - 85e1daa540d83d047808b123cfe89c59: 21300000
     - b72686575cfdbcc4487a9f58097ce943: 21300000
+    - b65eba5bc6e17094da43f19d7b07f79a: 21300000
     - 72ca4ddcd839caa43ad07a643530240f: 21300000
     - 7507591e1cebc6043a040fb0fb56c70e: 21300000
   m_MasterAtlas: {fileID: 0}
@@ -51,6 +52,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: cf547f448b973a84da0eabe0e57dc88b, type: 3}
   - {fileID: 21300000, guid: 85e1daa540d83d047808b123cfe89c59, type: 3}
   - {fileID: 21300000, guid: b72686575cfdbcc4487a9f58097ce943, type: 3}
+  - {fileID: 21300000, guid: b65eba5bc6e17094da43f19d7b07f79a, type: 3}
   - {fileID: 21300000, guid: 72ca4ddcd839caa43ad07a643530240f, type: 3}
   - {fileID: 21300000, guid: 7507591e1cebc6043a040fb0fb56c70e, type: 3}
   m_PackedSpriteNamesToIndex:
@@ -59,6 +61,7 @@ SpriteAtlas:
   - Button01_l_White_Bg
   - generic_shape_circle_border_crossCuts_128x128
   - WhiteSquare
+  - circle_loadingThin_sprite
   - circle-border-ui-sprite
   - Slider_Level01_Fill_White_fullBar
   m_RenderDataMap: {}

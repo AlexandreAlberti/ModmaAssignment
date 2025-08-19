@@ -12,6 +12,8 @@ namespace Game.UI
         [SerializeField] protected InteractableButton _curvedSwordButton;
         [SerializeField] protected InteractableButton _greatSwordButton;
         [SerializeField] protected InteractableButton _longSwordButton;
+        [SerializeField] protected InteractableButton _retryButton;
+        [SerializeField] protected InteractableButton _resetButton;
         [SerializeField] protected int _curvedSwordIndex;
         [SerializeField] protected int _greatSwordIndex;
         [SerializeField] protected int _longSwordIndex;
@@ -27,6 +29,7 @@ namespace Game.UI
         public static UIManager Instance  { get; private set; }
 
         public Action OnStartGameAnimationEnded;
+        public Action OnRetryButtonPressed;
 
         private void Awake()
         {
@@ -46,6 +49,16 @@ namespace Game.UI
             _curvedSwordButton.OnClicked += CurvedSwordButton_OnClicked;
             _greatSwordButton.OnClicked += GreatSwordButton_OnClicked;
             _longSwordButton.OnClicked += LongSwordButton_OnClicked;
+            _retryButton.OnClicked += RetryButton_OnClicked;
+            _resetButton.OnClicked += RetryButton_OnClicked;
+        }
+
+        public void Restart(int enemiesToKill, int remainingSeconds)
+        {
+            UpdateRemainingKills(enemiesToKill);
+            UpdateRemainingSeconds(remainingSeconds);
+            _startGamePanel.SetActive(false);
+            _endGamePanel.gameObject.SetActive(false);
         }
 
         private void CurvedSwordButton_OnClicked(InteractableButton button)
@@ -62,6 +75,11 @@ namespace Game.UI
             HeroManager.Instance.ChangeHeroWeapon(_longSwordIndex);
         }
 
+        private void RetryButton_OnClicked(InteractableButton button)
+        {
+            OnRetryButtonPressed?.Invoke();
+        }
+        
         public void ShowStartGameAnimation()
         {
             _startGamePanel.SetActive(true);

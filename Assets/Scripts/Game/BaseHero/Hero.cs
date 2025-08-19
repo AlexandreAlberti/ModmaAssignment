@@ -38,7 +38,12 @@ namespace Game.BaseHero
             _heroMeleeAttacker.Initialize();
             Enable();
         }
-        
+
+        public void Restart(int healthPoints)
+        {
+            _unit.Restart(healthPoints);
+        }
+
         private void OnMoved()
         {
             _unit.ResetFaceToEnemyRotation();

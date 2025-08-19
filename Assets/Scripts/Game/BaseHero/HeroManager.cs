@@ -42,5 +42,11 @@ namespace Game.BaseHero
         {
             _hero.KillHero(UNIT_MAX_HEALTH);
         }
+
+        public void Restart()
+        {
+            _hero.Restart(UNIT_MAX_HEALTH);
+            _hero.transform.position = Vector3.zero;
+        }
     }
 }

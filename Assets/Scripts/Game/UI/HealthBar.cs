@@ -17,6 +17,12 @@ namespace Game.UI
             _currentHealth.text = $"{currentHealth}";
         }
 
+        public void Restart(int currentHealth)
+        {
+            base.Initialize();
+            _currentHealth.text = $"{currentHealth}";
+        }
+
         private void PlayerHealth_OnDamaged(int damage, int currentHealth, int maxHealth)
         {
             EmptyBarPercentage((float)currentHealth / maxHealth);

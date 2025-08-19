@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Game;
 using System;
+using UnityEngine;
 
 namespace Game.BaseUnit
 {
@@ -19,6 +16,12 @@ namespace Game.BaseUnit
             _currentHealthPoints = maxPoints;
             _maxHealthPoints = maxPoints;
             Enable();
+        }
+        
+        public void Restart(int maxPoints)
+        {
+            _currentHealthPoints = maxPoints;
+            _maxHealthPoints = maxPoints;
         }
 
         public void TakeDamage(int amount)
@@ -42,7 +45,6 @@ namespace Game.BaseUnit
             }
 
             _currentHealthPoints -= amount;
-            // int damage, int currentHealth, int maxHealth
             OnDamageReceived?.Invoke(amount, _currentHealthPoints,  _maxHealthPoints); 
         }
     }

@@ -118,6 +118,7 @@ namespace Game.BaseEnemy
             yield return new WaitForSeconds(WAIT_TIME_BEFORE_ENEMY_APPEAR);
             Enemy enemyInstance = ObjectPool.Instance.GetPooledObject(_pooledEnemyConfig.EnemyPrefab.gameObject, spawnPosition, Quaternion.identity).GetComponent<Enemy>();
             enemyInstance.Initialize(_enemyDefaultHp, _pooledEnemyConfig.EnemyPrefab);
+            enemyInstance.OnDead -= Enemy_OnDead;
             enemyInstance.OnDead += Enemy_OnDead;
             yield return new WaitForSeconds(waitTime - WAIT_TIME_BEFORE_ENEMY_APPEAR);
             _enemyList?.Add(enemyInstance);
@@ -125,7 +126,6 @@ namespace Game.BaseEnemy
 
         private void Enemy_OnDead(Enemy enemy)
         {
-            enemy.OnDead -= Enemy_OnDead;
             _enemyList.Remove(enemy);
             OnEnemyKilled?.Invoke();
             StartCoroutine(WaitAndReleaseEnemy(enemy));
@@ -140,6 +140,16 @@ namespace Game.BaseEnemy
         public List<Enemy> GetEnemies()
         {
             return _enemyList;
+        }
+
+        public void Restart()
+        {
+            foreach (Enemy enemy in _enemyList)
+            {
+                ObjectPool.Instance.Release(enemy.GetEnemyPrefab().gameObject, enemy.gameObject);
+            }
+            
+            _enemyList.Clear();
         }
     }
 }

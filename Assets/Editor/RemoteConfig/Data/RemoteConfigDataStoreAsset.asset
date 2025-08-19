@@ -12,16 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 469c24fdb3bd6431b92cc1465bd9166b, type: 3}
   m_Name: RemoteConfigDataStoreAsset
   m_EditorClassIdentifier: 
-  _rsKeyList: "[\r\n  {\r\n    \"metadata\": {\r\n      \"entityId\": \"7073c397-1161-421b-9b6c-5a19519dfbe1\"\r\n   
+  _rsKeyList: "[\r\n  {\r\n    \"metadata\": {\r\n      \"entityId\": \"a35eee09-5524-42e5-afce-7b96cccfbcaa\"\r\n   
     },\r\n    \"rs\": {\r\n      \"key\": \"PlayTime\",\r\n      \"type\": \"int\",\r\n     
     \"value\": 90\r\n    }\r\n  },\r\n  {\r\n    \"metadata\": {\r\n      \"entityId\":
-    \"7f5cbedd-7982-4d89-a703-0667bd85caec\"\r\n    },\r\n    \"rs\": {\r\n     
+    \"ebe61353-d6b4-4147-ad55-069f4f18f105\"\r\n    },\r\n    \"rs\": {\r\n     
     \"key\": \"EnemiesToKill\",\r\n      \"type\": \"int\",\r\n      \"value\": 10\r\n   
     }\r\n  }\r\n]"
-  _rsLastCachedKeyList: "[\r\n  {\r\n    \"metadata\": {\r\n      \"entityId\": \"7073c397-1161-421b-9b6c-5a19519dfbe1\"\r\n   
+  _rsLastCachedKeyList: "[\r\n  {\r\n    \"metadata\": {\r\n      \"entityId\": \"a35eee09-5524-42e5-afce-7b96cccfbcaa\"\r\n   
     },\r\n    \"rs\": {\r\n      \"key\": \"PlayTime\",\r\n      \"type\": \"int\",\r\n     
     \"value\": 90\r\n    }\r\n  },\r\n  {\r\n    \"metadata\": {\r\n      \"entityId\":
-    \"7f5cbedd-7982-4d89-a703-0667bd85caec\"\r\n    },\r\n    \"rs\": {\r\n     
+    \"ebe61353-d6b4-4147-ad55-069f4f18f105\"\r\n    },\r\n    \"rs\": {\r\n     
     \"key\": \"EnemiesToKill\",\r\n      \"type\": \"int\",\r\n      \"value\": 10\r\n   
     }\r\n  }\r\n]"
   _environments: "[\r\n  {\r\n    \"projectId\": \"1b4f5853-50ee-4542-a4c3-31ef981f6965\",\r\n   

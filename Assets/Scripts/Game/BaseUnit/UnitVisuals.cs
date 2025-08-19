@@ -39,6 +39,11 @@ namespace Game.BaseUnit
             SaveOriginalRendererMaterials();
         }
         
+        public void Restart(int currentHealth)
+        {
+            _healthBar.Restart(currentHealth);
+        }
+        
         private void SaveOriginalRendererMaterials()
         {
             _originalMaterials = new List<Material>();

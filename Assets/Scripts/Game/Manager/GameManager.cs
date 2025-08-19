@@ -1,9 +1,11 @@
 using System;
+using System.Collections;
 using Game.BaseEnemy;
 using Game.BaseHero;
 using Game.Input;
 using Game.UI;
 using Game.Utils;
+using UI.ScreenFader;
 using UnityEngine;
 
 namespace Game.Manager
@@ -24,7 +26,7 @@ namespace Game.Manager
             Joystick.Instance.Initialize();
             TouchInputManager.Instance.Initialize();
             ObjectPool.Instance.ActivatePooling();
-            
+            ScreenFader.Instance.FadeOut();
             RemoteConfig.Instance.OnRemoteConfigLoaded += RemoteConfig_OnRemoteConfigLoaded;
             await RemoteConfig.Instance.Initialize();
         }
@@ -40,6 +42,11 @@ namespace Game.Manager
             _matchCountDown.OnCountDownEnded += MatchCountDown_OnCountDownEnded;
 
             UIManager.Instance.Initialize(_enemiesToKill, _playTime);
+            StartGameChoreography();
+        }
+
+        private void StartGameChoreography()
+        {
             UIManager.Instance.ShowStartGameAnimation();
             UIManager.Instance.OnStartGameAnimationEnded += UIManager_OnStartGameAnimationEnded;
         }
@@ -54,11 +61,33 @@ namespace Game.Manager
             Joystick.Instance.Enable();
             TouchInputManager.Instance.Enable();
             EnemyManager.Instance.Enable();
+            EnemyManager.Instance.OnEnemyKilled -= EnemyManager_OnEnemyKilled;
             EnemyManager.Instance.OnEnemyKilled += EnemyManager_OnEnemyKilled;
             HeroManager.Instance.OnHeroDeath += HeroManager_OnHeroDeath;
             _enemiesKilled = 0;
             _secondsPassed = 0;
             _matchCountDown.StartCounting();
+            UIManager.Instance.OnRetryButtonPressed += OnRetryButtonPressed;
+        }
+
+        private void OnRetryButtonPressed()
+        {
+            StopGamePlay();
+            UIManager.Instance.OnRetryButtonPressed -= OnRetryButtonPressed;
+            StartCoroutine(ResetGameChoreography());
+        }
+
+        private IEnumerator ResetGameChoreography()
+        {
+            float fadeInDuration = ScreenFader.Instance.FadeIn(true);
+            yield return new WaitForSeconds(fadeInDuration);
+            _matchCountDown.SetTotalTime(_playTime);
+            HeroManager.Instance.Restart();
+            EnemyManager.Instance.Restart();
+            UIManager.Instance.Restart(_enemiesToKill, _playTime);
+            float fadeOutDuration = ScreenFader.Instance.FadeOut();
+            yield return new WaitForSeconds(fadeOutDuration);
+            StartGameChoreography();
         }
 
         private void HeroManager_OnHeroDeath()
@@ -79,13 +108,20 @@ namespace Game.Manager
 
         private void EndGame(bool win)
         {
+            StopGamePlay();
+            UIManager.Instance.ShowEndGame(win);
+        }
+
+        private void StopGamePlay()
+        {
+            EnemyManager.Instance.OnEnemyKilled -= EnemyManager_OnEnemyKilled;
+            HeroManager.Instance.OnHeroDeath -= HeroManager_OnHeroDeath;
             _matchCountDown.StopCounting();
             Joystick.Instance.Disable();
             TouchInputManager.Instance.Disable();
             EnemyManager.Instance.Disable();
-            UIManager.Instance.ShowEndGame(win);
         }
-        
+
         private void MatchCountDown_OnCountDownEnded()
         {
             HeroManager.Instance.KillHero();
