@@ -38,6 +38,9 @@ namespace Game.BaseUnit
 
         private void UnitHealth_OnDeath()
         {
+            _unitHealth.OnDamageReceived -= UnitHealth_OnDamageReceived;
+            _unitHealth.OnDeath -= UnitHealth_OnDeath;
+
             Disable();
             _unitVisuals.EnableDamageFlash();
             _unitVisuals.PlayDieAnimation();

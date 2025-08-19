@@ -1,15 +1,23 @@
-using System.Collections;
+using System;
 using Game.BaseEnemy;
 using Game.BaseHero;
 using Game.Input;
-using UI;
+using Game.UI;
+using Game.Utils;
 using UnityEngine;
 
 namespace Game.Manager
 {
     public class GameManager : MonoBehaviour
     {
-        void Start()
+        private const int ENEMIES_TO_KILL = 10;
+        private const int TIME_TO_PLAY = 60;
+        
+        private CountDown _matchCountDown;
+        private int _enemiesKilled;
+        private int _secondsPassed;
+        
+        private void Start()
         {
             ObjectPool.Instance.Initialize();
             HeroManager.Instance.Initialize();
@@ -17,7 +25,13 @@ namespace Game.Manager
             Joystick.Instance.Initialize();
             TouchInputManager.Instance.Initialize();
             ObjectPool.Instance.ActivatePooling();
-            UIManager.Instance.Initialize();
+            
+            _matchCountDown = gameObject.AddComponent<CountDown>();
+            _matchCountDown.SetTotalTime(TIME_TO_PLAY);
+            _matchCountDown.OnSecondPassed += MatchCountDown_OnSecondPassed;
+            _matchCountDown.OnCountDownEnded += MatchCountDown_OnCountDownEnded;
+            
+            UIManager.Instance.Initialize(ENEMIES_TO_KILL, TIME_TO_PLAY);
             UIManager.Instance.ShowStartGameAnimation();
             UIManager.Instance.OnStartGameAnimationEnded += UIManager_OnStartGameAnimationEnded;
         }
@@ -32,6 +46,47 @@ namespace Game.Manager
             Joystick.Instance.Enable();
             TouchInputManager.Instance.Enable();
             EnemyManager.Instance.Enable();
+            EnemyManager.Instance.OnEnemyKilled += EnemyManager_OnEnemyKilled;
+            HeroManager.Instance.OnHeroDeath += HeroManager_OnHeroDeath;
+            _enemiesKilled = 0;
+            _secondsPassed = 0;
+            _matchCountDown.StartCounting();
+        }
+
+        private void HeroManager_OnHeroDeath()
+        {
+            EndGame(false);
+        }
+
+        private void EnemyManager_OnEnemyKilled()
+        {
+            _enemiesKilled++;
+            UIManager.Instance.UpdateRemainingKills(Math.Max(0, ENEMIES_TO_KILL - _enemiesKilled));
+
+            if (_enemiesKilled >= ENEMIES_TO_KILL)
+            {
+                EndGame(true);
+            }
+        }
+
+        private void EndGame(bool win)
+        {
+            _matchCountDown.StopCounting();
+            Joystick.Instance.Disable();
+            TouchInputManager.Instance.Disable();
+            EnemyManager.Instance.Disable();
+            UIManager.Instance.ShowEndGame(win);
+        }
+        
+        private void MatchCountDown_OnCountDownEnded()
+        {
+            HeroManager.Instance.KillHero();
+        }
+        
+        private void MatchCountDown_OnSecondPassed()
+        {
+            _secondsPassed++;
+            UIManager.Instance.UpdateRemainingSeconds(TIME_TO_PLAY - _secondsPassed);
         }
     }
 }

@@ -43,7 +43,6 @@ namespace Game.BaseEnemy
 
         public void TakeDamage(int damage)
         {
-            Debug.Log($"Enemy is taking damage {damage}");
             _unit.TakeDamage(damage);
         }
 

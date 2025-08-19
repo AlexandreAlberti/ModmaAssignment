@@ -1,11 +1,14 @@
+using System;
 using UnityEngine;
 
 namespace Game.BaseHero
 {
     public class HeroManager : EnablerMonoBehaviour
     {
+        private const int UNIT_MAX_HEALTH = 50;
         public static HeroManager Instance  { get; private set; }
-        
+
+        public Action OnHeroDeath;
         private Hero _hero;
 
         private void Awake()
@@ -16,7 +19,8 @@ namespace Game.BaseHero
         public void Initialize()
         {
             _hero = FindObjectOfType<Hero>();
-            _hero.Initialize(50);
+            _hero.Initialize(UNIT_MAX_HEALTH);
+            _hero.OnHeroDeath += Hero_OnHeroDeath;
         }
 
         public Vector3 GetHeroPosition()
@@ -27,6 +31,16 @@ namespace Game.BaseHero
         public void ChangeHeroWeapon(int newWeapon)
         {
             _hero.ChangeWeapon(newWeapon);
+        }
+
+        private void Hero_OnHeroDeath()
+        {
+            OnHeroDeath?.Invoke();
+        }
+
+        public void KillHero()
+        {
+            _hero.KillHero(UNIT_MAX_HEALTH);
         }
     }
 }

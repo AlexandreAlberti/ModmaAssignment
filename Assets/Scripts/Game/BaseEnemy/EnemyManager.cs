@@ -21,7 +21,8 @@ namespace Game.BaseEnemy
         [SerializeField] private EnemyRaySpawner _enemySpawnRayVfxPrefab;
 
         public static EnemyManager Instance { get; private set; }
-        
+
+        public Action OnEnemyKilled;
         private List<Enemy> _enemyList;
         private float _spawnTimer;
 
@@ -126,6 +127,7 @@ namespace Game.BaseEnemy
         {
             enemy.OnDead -= Enemy_OnDead;
             _enemyList.Remove(enemy);
+            OnEnemyKilled?.Invoke();
             StartCoroutine(WaitAndReleaseEnemy(enemy));
         }
 
