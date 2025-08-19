@@ -79,6 +79,8 @@ namespace Game.UI
 
         public void ShowEndGame(bool win)
         {
+            _endGamePanel.gameObject.SetActive(true);
+            
             if (win)
             {
                 _endGamePanel.ShowWinText();
@@ -87,8 +89,6 @@ namespace Game.UI
             {
                 _endGamePanel.ShowLoseText();
             }
-            
-            _endGamePanel.gameObject.SetActive(true);
         }
 
         public void UpdateRemainingKills(int enemiesToKill)
