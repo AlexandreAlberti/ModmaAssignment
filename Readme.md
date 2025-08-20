@@ -44,6 +44,7 @@ This phase was around 2h.
     - Enemy count and win condition with UI
     - Time left with lose condition and UI
 - Remote Config integration using Unity Services
+- Intro Choreography with back screen fading in-out effects
 - Retry/Reset Logic with UI.
 
 This whole feature development took around 12h.

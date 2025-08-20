@@ -12,6 +12,8 @@ namespace Game.Manager
 {
     public class GameManager : MonoBehaviour
     {
+        private const float RESET_LOADING_WAIT_TIME = 2.0f;
+        
         private CountDown _matchCountDown;
         private int _enemiesToKill;
         private int _enemiesKilled;
@@ -81,6 +83,7 @@ namespace Game.Manager
         {
             float fadeInDuration = ScreenFader.Instance.FadeIn(true);
             yield return new WaitForSeconds(fadeInDuration);
+            yield return new WaitForSeconds(RESET_LOADING_WAIT_TIME);
             _matchCountDown.SetTotalTime(_playTime);
             HeroManager.Instance.Restart();
             EnemyManager.Instance.Restart();
